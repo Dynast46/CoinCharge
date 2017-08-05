@@ -69,11 +69,6 @@ public class ExpireActivity extends AppCompatActivity {
     private View.OnClickListener mExpireCodeClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//            Intent i = getBaseContext().getPackageManager()
-//                    .getLaunchIntentForPackage( getBaseContext().getPackageName() );
-//            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            startActivity(i);
-//            finish();
             receiveUnSignCode();
         }
     };
@@ -165,15 +160,10 @@ public class ExpireActivity extends AppCompatActivity {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             SharedPreferenceUtils.removeAllData(mContext);
-//                                            Intent intent = new Intent();
-//                                            intent.setAction(com.sundaymorning.emoticon.Common.FINISH_APP);
-//                                            mContext.sendBroadcast(intent);
+                                            Intent intent = new Intent();
+                                            intent.setAction(com.sundaymorning.coincharge.Common.FINISH_APP);
+                                            mContext.sendBroadcast(intent);
 
-                                            Intent i = getBaseContext().getPackageManager().
-                                                    getLaunchIntentForPackage(getBaseContext().getPackageName());
-                                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            startActivity(i);
                                             finish();
                                         }
                                     }, null);

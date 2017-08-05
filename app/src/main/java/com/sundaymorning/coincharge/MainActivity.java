@@ -1,9 +1,11 @@
 package com.sundaymorning.coincharge;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -96,6 +98,28 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         TnkSession.setUserName(this, memberLoginData.getMID());
+        registerReceiver();
+    }
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (context != null && intent != null && intent.getAction() != null) {
+                if (intent.getAction().equals(Common.FINISH_APP)) {
+                    finish();
+                }
+            }
+        }
+    };
+
+    private void registerReceiver() {
+        IntentFilter f = new IntentFilter();
+        f.addAction(Common.FINISH_APP);
+        registerReceiver(receiver, f);
+    }
+
+    private void unregisterReceiver() {
+        unregisterReceiver(receiver);
     }
 
     @Override
@@ -125,6 +149,7 @@ public class MainActivity extends AppCompatActivity
         // TODO Auto-generated method stub
         super.onDestroy();
         IgawDisplayAd.destroy();
+        unregisterReceiver();
     }
 
     private void initOffer() {
