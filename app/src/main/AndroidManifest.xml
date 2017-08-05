@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.sundaymorning.coincharge"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="com.sundaymorning.coincharge.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <!-- ADS -->
+        <activity
+            android:name="com.nextapps.naswall.NASWallBrowser"
+            android:configChanges="keyboardHidden|orientation|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="naswall_app_key"
+            android:value="@string/nas_key"/>
+
+        <activity
+            android:name="com.nextapps.naswall.NASWall"
+            android:configChanges="keyboardHidden|orientation"/>
+
+        <meta-data
+            android:name="tnkad_app_id"
+            android:value="d060b080-30f1-859b-b958-1f0304090809"/>
+
+        <activity android:name="com.tnkfactory.ad.AdWallActivity"/>
+        <activity
+            android:name="com.tnkfactory.ad.AdMediaActivity"
+            android:screenOrientation="portrait"/>
+
+        <meta-data
+            android:name="igaworks_app_key"
+            android:value="505587226"/>
+
+        <meta-data
+            android:name="igaworks_hash_key"
+            android:value="2ba5bd5f27ea407d"/>
+
+        <meta-data
+            android:name="igaworks_reward_server_type"
+            android:value="server"/>
+
+        <receiver
+            android:name="com.igaworks.IgawReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER"/>
+            </intent-filter>
+        </receiver>
+
+        <activity android:name="com.igaworks.adpopcorn.activity.ApOfferWallActivity_NT"/>
+
+        <activity
+            android:name="com.igaworks.adpopcorn.activity.ApVideoAdActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar"/>
+
+        <!-- End Ads -->
+
+        <!-- GCM -->
+
+        <receiver
+            android:name="com.sundaymorning.coincharge.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+
+                <category android:name="com.sundaymorning.coincharge"/>
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.sundaymorning.coincharge.GCMIntentService"/>
+
+        <!-- End GCM -->
+
+        <activity
+            android:name="com.sundaymorning.coincharge.activity.SettingAcitivity"
+            android:label="설정"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name="com.sundaymorning.coincharge.InitActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.ReceiveFundActivity"
+            android:label="@string/receive_fund"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.UseFundActivity"
+            android:label="@string/use_fund"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.HelpActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.MemberActivity"
+            android:label="@string/login"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <activity
+            android:name=".activity.PolicyActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.SignUpActivity"
+            android:label="@string/join"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <activity android:name=".activity.FindAccountActivity"
+            android:label="@string/find_account"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <activity android:name=".activity.FindPWActivity"
+            android:label="@string/find_password"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <activity android:name=".activity.SignUp0Activity"
+            android:label="@string/join"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".activity.DetailActivity" />
+    </application>
+
+</manifest>

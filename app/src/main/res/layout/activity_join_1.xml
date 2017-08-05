@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/edittext_email"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="@string/id_hint"
+        android:inputType="textEmailAddress"
+        android:paddingEnd="3dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingStart="3dp" />
+
+    <EditText
+        android:id="@+id/edittext_pw"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:autoText="false"
+        android:ems="30"
+        android:hint="@string/hint_password"
+        android:inputType="textPassword"
+        android:paddingEnd="3dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingStart="3dp" />
+
+    <EditText
+        android:id="@+id/edittext_pw_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:autoText="false"
+        android:ems="30"
+        android:hint="@string/input_password_repeat"
+        android:inputType="textPassword"
+        android:paddingEnd="3dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingStart="3dp" />
+
+    <EditText
+        android:id="@+id/edittext_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:ems="30"
+        android:hint="@string/hint_nickname"
+        android:inputType="text"
+        android:paddingEnd="3dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingStart="3dp" />
+
+    <Button
+        android:id="@+id/qid_btn"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:background="@null"
+        android:gravity="right"
+        android:text="@string/question_id"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/qpw_btn"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:background="@null"
+        android:gravity="right"
+        android:text="@string/question_pw"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/chkbox_policy1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="@string/policy" />
+
+        <Button
+            android:id="@+id/btn_policy"
+            style="@style/btn_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_all" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/chkbox_policy2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="@string/policy2" />
+
+        <Button
+            android:id="@+id/btn_policy2"
+            style="@style/btn_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_all" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edittext_recommend"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="@string/input_recommend"
+        android:inputType="text"
+        android:paddingEnd="3dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingStart="3dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <!--<Button-->
+            <!--android:id="@+id/login_btn"-->
+            <!--style="@style/btn_style"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="false"-->
+            <!--android:layout_margin="8dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="@string/login" />-->
+
+            <Button
+                android:id="@+id/btn_join"
+                style="@style/btn_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:text="@string/join" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
+</ScrollView>

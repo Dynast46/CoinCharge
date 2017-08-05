@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "389367641269",
+    "firebase_url": "https://coincharge-7fe40.firebaseio.com",
+    "project_id": "coincharge-7fe40",
+    "storage_bucket": "coincharge-7fe40.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389367641269:android:825c6db1982f8604",
+        "android_client_info": {
+          "package_name": "com.sundaymorning.coincharge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389367641269-ivvinlsai7gl4a6bouvuvkjfupv95n51.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMQEp8n6tvqJYvQz_BMoGXMxULyxM0fJI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
