@@ -1,5 +1,6 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">코인충전소</string>
+    <string name="AdPopcorn">AdPopcorn</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -7,6 +8,7 @@
     <string name="action_settings">설정</string>
 
     <string name="nas_key">b22f802757c4b9237d63456532fb19a5</string>
+    <string name="tnk_key" tools:ignore="TypographyDashes">d060b080–30f1–859b–b958-1f0304090809</string>
     <string name="version">버전</string>
     <string name="current_version">현재버전</string>
     <string name="new_version">최신버전</string>
@@ -16,14 +18,15 @@
     <string name="policy">이용약관</string>
     <string name="policy2">개인정보취급방침</string>
 
-    <string name="my_page">마이 페이지</string>
+    <string name="my_page">마이 페이지 &amp; 설정</string>
     <string name="my_data">내역</string>
     <string name="now_fund">현재 적립금</string>
     <string name="receive_fund">적립 내역</string>
     <string name="use_fund">사용 내역</string>
 
     <string name="recommendation">추천</string>
-    <string name="receive_recomm">나를 추천한 친구들</string>
+    <string name="receive_recomm">추천정보</string>
+    <string name="complete_mission">내 미션 완료여부</string>
     <string name="send_recomm">내가 추천한 친구</string>
 
     <string name="date_text">날짜</string>
@@ -36,6 +39,7 @@
     <string name="question">문의하기</string>
 
     <string name="current_coin">%1$d 코인</string>
+    <string name="current_coin1">보유 코인 : %1$d</string>
     <string name="now_coin">보유 코인</string>
 
 
@@ -81,6 +85,7 @@
     <string name="join_birth_data_error">올바른 생년월일을 입력하세요.</string>
     <string name="nickname_duplicated_error">이미 등록된 닉네임입니다.</string>
     <string name="account_duplicated_error">이미 등록된 이메일입니다.</string>
+    <string name="store">스토어</string>
     <string name="setting">설정</string>
     <string name="cash">캐시</string>
     <string name="attendance">출석하기</string>
@@ -137,6 +142,8 @@
     <string name="loading">Loading…</string>
     <string name="success_password_change">성공적으로 변경되었습니다.</string>
     <string name="fail_code">올바른 인증번호를 입력하세요.</string>
+
+    <string name="unsign_code_null">탈퇴 코드를 입력하세요.</string>
     <string name="receive_unsign_code">탈퇴코드 받기</string>
     <string name="send_unsign_code">탈퇴하기</string>
     <string name="unsign_reason">탈퇴 사유</string>
@@ -154,4 +161,17 @@
     <string name="sms_cert_error_103">이미 가입된 휴대폰 번호입니다.\n다른 번호로 인증을 받아주세요.\n계정을 분실하였을 경우\n sundaymorning0315.contact@gmail.com로 메일주시기 바랍니다.</string>
     <string name="ads_detail">광고상세</string>
     <string name="current_join">적립받기</string>
+
+    <string name="old_pw_null">기존 비밀번호를 입력해주세요.</string>
+    <string name="new_pw_null">새 비밀번호를 입력해주세요.</string>
+    <string name="new_pw_confirm_null">새 비밀번호 확인란에 입력해주세요.</string>
+
+    <string name="new_pw_confirm_error">새 비밀번호가 다릅니다.</string>
+
+    <string name="new_pw_overlap">새 비밀번호가 기존 비밀번호와 동일합니다.</string>
+    <string name="new_pw_disagree">해당된 비밀번호는 변경이 불가능합니다.</string>
+
+    <string name="receive_friend">나를 추천한 친구</string>
+    <string name="mission">미션</string>
+    <string name="friend_to_friend">친구의 친구</string>
 </resources>

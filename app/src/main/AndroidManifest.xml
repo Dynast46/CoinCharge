@@ -14,8 +14,10 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name="com.igaworks.IgawDefaultApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
@@ -59,11 +61,11 @@
 
         <meta-data
             android:name="igaworks_app_key"
-            android:value="505587226"/>
+            android:value="687410419"/>
 
         <meta-data
             android:name="igaworks_hash_key"
-            android:value="2ba5bd5f27ea407d"/>
+            android:value="decbd18f4f874839"/>
 
         <meta-data
             android:name="igaworks_reward_server_type"
@@ -110,7 +112,7 @@
         <activity
             android:name="com.sundaymorning.coincharge.InitActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/InitActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -156,6 +158,20 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".activity.DetailActivity" />
+
+        <activity android:name=".activity.ChangePWActivity"
+            android:label="@string/change_password"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".activity.RecommActivity"
+            android:label="@string/receive_recomm"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".activity.ExpireActivity"
+            android:label="@string/un_sign"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
     </application>
 
 </manifest>

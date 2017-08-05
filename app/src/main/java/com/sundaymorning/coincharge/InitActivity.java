@@ -39,6 +39,128 @@ public class InitActivity extends Activity {
             android.Manifest.permission.ACCESS_WIFI_STATE,
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+    private com.namember.utils.Common.OnMemberViewListener mOnMemberViewListener = new com.namember.utils.Common.OnMemberViewListener() {
+
+        @Override
+        public void onJson(String json) {
+        }
+
+        @Override
+        public void onError(int errorCode) {
+            Utils.Log("MEMBER VIEW ERROR CODE : " + errorCode);
+            moveLogin();
+        }
+
+        @Override
+        public void OnSuccess(MemberData memberData) {
+
+            if (memberData != null) {
+
+                MemberInfoData memberInfoData = new MemberInfoData();
+                memberInfoData.setNickName(memberData.getMemberNickname());
+                memberInfoData.setMoney(memberData.getMoney());
+                memberInfoData.setMyRecommendNickname(memberData.getRecommenderMemberNickName());
+                memberInfoData.setEmail(memberData.getMemberEmail());
+                memberInfoData.setAge(memberData.getAge());
+                memberInfoData.setSex(memberData.getSex());
+
+                SharedPreferenceUtils.saveMemberInfoData(mContext, memberInfoData);
+
+                moveMain();
+            }
+        }
+    };
+    private com.namember.utils.Common.OnMemberAutoLoginListener mOnMemberAutoLoginListener = new com.namember.utils.Common.OnMemberAutoLoginListener() {
+
+        @Override
+        public void OnJson(String json) {
+        }
+
+        @Override
+        public void OnSuccess(MemberLoginData memberLoginData) {
+
+            Utils.Log("@@@@ : " + memberLoginData.getMemberID());
+            Utils.Log("@@@@ : " + memberLoginData.getLoginKey());
+            Utils.Log("@@@@ : " + memberLoginData.getMemberDeviceID());
+
+            loginInfo();
+        }
+
+        @Override
+        public void OnError(int errorCode) {
+            String message = "[" + errorCode + "] 로그인에 실패하였습니다.\n잠시 후 다시 시도해주세요.";
+            if (errorCode == -300) {
+                message = "차단된 계정입니다.\n문의가 있으시면 sundaymorning0315.contact@gmail.com으로 문의주세요.";
+            } else if (errorCode == -9999) {
+                message = "네트워크 오류가 발생하였습니다.\n인터넷 연결상태를 확인 후 다시 시도해주세요.";
+            } else {
+                Utils.Log("AUTO LOGIN ERROR CODE : " + errorCode);
+                moveLogin();
+                return;
+            }
+
+            Utils.showToast(mContext, message);
+        }
+    };
+    private com.namember.utils.Common.OnMemberInitListener mOnMemberInitListener = new com.namember.utils.Common.OnMemberInitListener() {
+        @Override
+        public void OnSuccess(InitData initData) {
+            if (initData != null) {
+
+                MemberInitData data = new MemberInitData();
+                data.setNAS(initData.isUseNAS());
+                data.setTNK(initData.isUseTNK());
+                data.setIGAWORK(initData.isUseIGAW());
+                data.setVersion(initData.getVersion());
+                data.setHelpID(initData.getHelpID());
+                data.setNoticeID(initData.getNoticeID());
+                data.setMarketMoveURL(initData.getCompulsoryMarkertMoveURL());
+
+                SharedPreferenceUtils.saveMemberInitData(mContext, data);
+
+                if (initData.getUseCompulsoryUpdate() == 1) {
+                    forceUpdate(initData.getCompulsoryMarkertMoveURL());
+                } else {
+                    autoLogin();
+                }
+            }
+        }
+
+        @Override
+        public void OnError(int i) {
+            if (i == -9999) {
+                Utils.showDialog(mContext,
+                        null,
+                        getResources().getString(R.string.network_error_message),
+                        getResources().getString(R.string.ok),
+                        null,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                close();
+                            }
+                        }, null);
+            } else {
+                //초기화에 실패하였습니다.
+                Utils.showDialog(mContext,
+                        null,
+                        "[" + i + "] " + getResources().getString(R.string.re_try_message),
+                        getResources().getString(R.string.ok),
+                        null,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                close();
+                            }
+                        }, null);
+            }
+        }
+
+        @Override
+        public void OnJson(String s) {
+
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,67 +224,6 @@ public class InitActivity extends Activity {
                 mOnMemberInitListener);
     }
 
-
-    private com.namember.utils.Common.OnMemberInitListener mOnMemberInitListener = new com.namember.utils.Common.OnMemberInitListener() {
-        @Override
-        public void OnSuccess(InitData initData) {
-            if (initData != null) {
-
-                MemberInitData data = new MemberInitData();
-                data.setNAS(initData.isUseNAS());
-                data.setTNK(initData.isUseTNK());
-                data.setIGAWORK(initData.isUseIGAW());
-                data.setVersion(initData.getVersion());
-                data.setHelpID(initData.getHelpID());
-                data.setNoticeID(initData.getNoticeID());
-                data.setMarketMoveURL(initData.getCompulsoryMarkertMoveURL());
-
-//                SharedPreferenceUtils.saveMemberInitData(mContext, data);
-
-                if (initData.getUseCompulsoryUpdate() == 1) {
-                    forceUpdate(initData.getCompulsoryMarkertMoveURL());
-                } else {
-                    autoLogin();
-                }
-            }
-        }
-
-        @Override
-        public void OnError(int i) {
-            if (i == -9999) {
-                Utils.showDialog(mContext,
-                        null,
-                        getResources().getString(R.string.network_error_message),
-                        getResources().getString(R.string.ok),
-                        null,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                close();
-                            }
-                        }, null);
-            } else {
-                //초기화에 실패하였습니다.
-                Utils.showDialog(mContext,
-                        null,
-                        "[" + i + "] " + getResources().getString(R.string.re_try_message),
-                        getResources().getString(R.string.ok),
-                        null,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                close();
-                            }
-                        }, null);
-            }
-        }
-
-        @Override
-        public void OnJson(String s) {
-
-        }
-    };
-
     private void close() {
         finish();
     }
@@ -214,61 +275,6 @@ public class InitActivity extends Activity {
 
         NAMember.MemberView(mContext, mOnMemberViewListener);
     }
-
-    private com.namember.utils.Common.OnMemberAutoLoginListener mOnMemberAutoLoginListener = new com.namember.utils.Common.OnMemberAutoLoginListener() {
-
-        @Override
-        public void OnJson(String json) {
-        }
-
-        @Override
-        public void OnSuccess(MemberLoginData memberLoginData) {
-
-            Utils.Log("@@@@ : " + memberLoginData.getMemberID());
-            Utils.Log("@@@@ : " + memberLoginData.getLoginKey());
-            Utils.Log("@@@@ : " + memberLoginData.getMemberDeviceID());
-
-            loginInfo();
-        }
-
-        @Override
-        public void OnError(int errorCode) {
-            Utils.Log("AUTO LOGIN ERROR CODE : " + errorCode);
-            moveLogin();
-        }
-    };
-
-    private com.namember.utils.Common.OnMemberViewListener mOnMemberViewListener = new com.namember.utils.Common.OnMemberViewListener() {
-
-        @Override
-        public void onJson(String json) {
-        }
-
-        @Override
-        public void onError(int errorCode) {
-            Utils.Log("MEMBER VIEW ERROR CODE : " + errorCode);
-            moveLogin();
-        }
-
-        @Override
-        public void OnSuccess(MemberData memberData) {
-
-            if (memberData != null) {
-
-                MemberInfoData memberInfoData = new MemberInfoData();
-                memberInfoData.setNickName(memberData.getMemberNickname());
-                memberInfoData.setMoney(memberData.getMoney());
-                memberInfoData.setMyRecommendNickname(memberData.getRecommenderMemberNickName());
-                memberInfoData.setEmail(memberData.getMemberEmail());
-                memberInfoData.setAge(memberData.getAge());
-                memberInfoData.setSex(memberData.getSex());
-
-                SharedPreferenceUtils.saveMemberInfoData(mContext, memberInfoData);
-
-                moveMain();
-            }
-        }
-    };
 
     private void moveLogin() {
         Intent intent = new Intent(mContext, MemberActivity.class);

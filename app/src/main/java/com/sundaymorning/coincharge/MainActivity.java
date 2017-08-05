@@ -1,9 +1,6 @@
 package com.sundaymorning.coincharge;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,17 +21,26 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.igaworks.IgawCommon;
+import com.igaworks.adpopcorn.IgawAdpopcorn;
+import com.igaworks.displayad.IgawDisplayAd;
 import com.namember.NAMember;
+import com.namember.data.MemberLoginData;
 import com.nextapps.naswall.NASWall;
 import com.nextapps.naswall.NASWallAdInfo;
 import com.sundaymorning.coincharge.activity.HelpActivity;
-import com.sundaymorning.coincharge.activity.SettingAcitivity;
+import com.sundaymorning.coincharge.data.LoginData;
 import com.sundaymorning.coincharge.data.MemberInfoData;
+import com.sundaymorning.coincharge.data.MemberInitData;
 import com.sundaymorning.coincharge.data.SharedPreferenceUtils;
 import com.sundaymorning.coincharge.fragment.MyPageFragment;
 import com.sundaymorning.coincharge.fragment.OfferwallFragment;
+import com.sundaymorning.coincharge.fragment.SettingFragment;
+import com.sundaymorning.coincharge.fragment.StoreFragment;
 import com.sundaymorning.coincharge.object.NasEntry;
 import com.sundaymorning.coincharge.utils.Utils;
+import com.tnkfactory.ad.TnkSession;
+import com.tnkfactory.ad.TnkStyle;
 
 import java.util.ArrayList;
 
@@ -42,12 +50,17 @@ public class MainActivity extends AppCompatActivity
     private Context mContext = this;
 
     private MemberInfoData memberInfoData;
+    private LoginData memberLoginData;
 
     private ArrayList<NasEntry> nas_entries = new ArrayList<>();
     private ArrayList<NASWallAdInfo> mAdsInfo = new ArrayList<>();
     NavigationView navigationView;
     private int menuItemID = R.id.ads1;
+
+    private TextView mCurrent_Nick;
     private TextView mCurrent_Coin;
+
+    public int mLastViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +68,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
 //        initOffer();
-
+        memberLoginData = SharedPreferenceUtils.loadLogin(mContext);
         memberInfoData = SharedPreferenceUtils.loadMemberInfoData(mContext);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -69,10 +82,20 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
+        MemberInitData initData = SharedPreferenceUtils.loadMemberInitData(this);
+
+        if (initData.isIGAWORK())
+            navigationView.inflateMenu(R.menu.activity_main_drawer);
+        else
+            navigationView.inflateMenu(R.menu.activity_main_drawer_nonigaw);
+
         LinearLayout HeaderView = (LinearLayout) navigationView.getHeaderView(0);
 
         mCurrent_Coin = (TextView)HeaderView.findViewById(R.id.current_coin);
+        mCurrent_Nick = (TextView)HeaderView.findViewById(R.id.current_nick);
         navigationView.setNavigationItemSelectedListener(this);
+
+        TnkSession.setUserName(this, memberLoginData.getMID());
     }
 
     @Override
@@ -80,11 +103,28 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
 
         if (menuItemID == R.id.ads1) {
-            mAdsInfo.clear();
-            nas_entries.clear();
-            initOffer();
+            if (mLastViewPager == 2) {
+                IgawCommon.startSession(this);
+                IgawCommon.setUserId(this,memberLoginData.getMID());
+
+            } else if (mLastViewPager == 1){
+                TnkSession.setUserName(this, memberLoginData.getMID());
+            } else {
+                mAdsInfo.clear();
+                nas_entries.clear();
+                initOffer();
+            }
         }
-        mCurrent_Coin.setText(String.format(getResources().getString(R.string.current_coin), memberInfoData.getMoney()));
+
+        mCurrent_Nick.setText(memberInfoData.getNickName());
+        mCurrent_Coin.setText(String.format(getResources().getString(R.string.current_coin1), memberInfoData.getMoney()));
+    }
+
+    @Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        IgawDisplayAd.destroy();
     }
 
     private void initOffer() {
@@ -135,23 +175,25 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+//        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(mContext, SettingAcitivity.class));
-            return true;
-        }
-
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            startActivity(new Intent(mContext, SettingAcitivity.class));
+//            return true;
+//        }
+//
         return super.onOptionsItemSelected(item);
     }
 
@@ -160,7 +202,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
 
-        Fragment fr = null;
+        android.support.v4.app.Fragment fr = null;
         Intent intent = null;
 
         int id = item.getItemId();
@@ -168,15 +210,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.ads1) {
             fr = new OfferwallFragment(mContext, nas_entries, mAdsInfo);
-        }
-//        else if (id == R.id.ads2) {
-//            return true;
-//        } else if (id == R.id.ads3) {
-//            return true;
-//        } else if (id == R.id.store) {
-//            return true;
-//        }
-        else if (id == R.id.mypage) {
+        } else if (id == R.id.mypage) {
             fr = new MyPageFragment(mContext);
         } else if (id == R.id.question) {
             askQuestion();
@@ -188,11 +222,20 @@ public class MainActivity extends AppCompatActivity
             intent = new Intent(mContext, HelpActivity.class);
             intent.putExtra(Common.TYPE, Common.HELP_TYPE);
         }
+//        else if (id == R.id.settings) {
+//            fr = new SettingFragment(mContext);
+//        }
+        else if (id == R.id.store) {
+            fr = new StoreFragment(mContext);
+        } else if (id == R.id.adpopcorn) {
+            IgawAdpopcorn.openOfferWall(this);
+            return true;
+        }
 
         if (id == R.id.notice || id == R.id.help) {
             startActivity(intent);
         } else {
-            FragmentManager fm = getFragmentManager();
+            FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_place, fr);
             fragmentTransaction.commit();
@@ -237,5 +280,14 @@ public class MainActivity extends AppCompatActivity
         emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, title);
         emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(message));
         context.startActivity(Intent.createChooser(emailIntent, "Email:"));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        // TODO Auto-generated method stub
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // 유저가 선택한 결과를 SDK에 넘겨줌.
+//        if(offerwallLayout != null)
+//            offerwallLayout.onRequestPermissionsResult(requestCode,permissions, grantResults);
     }
 }

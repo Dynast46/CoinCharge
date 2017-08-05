@@ -104,6 +104,8 @@ android:layout_height="match_parent">
             style="@style/btn_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:text="@string/view_all" />
     </LinearLayout>
 
@@ -125,6 +127,8 @@ android:layout_height="match_parent">
             style="@style/btn_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:text="@string/view_all" />
 
     </LinearLayout>
