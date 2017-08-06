@@ -27,7 +27,6 @@ import com.igaworks.IgawCommon;
 import com.igaworks.adpopcorn.IgawAdpopcorn;
 import com.igaworks.displayad.IgawDisplayAd;
 import com.namember.NAMember;
-import com.namember.data.MemberLoginData;
 import com.nextapps.naswall.NASWall;
 import com.nextapps.naswall.NASWallAdInfo;
 import com.sundaymorning.coincharge.activity.HelpActivity;
@@ -37,32 +36,45 @@ import com.sundaymorning.coincharge.data.MemberInitData;
 import com.sundaymorning.coincharge.data.SharedPreferenceUtils;
 import com.sundaymorning.coincharge.fragment.MyPageFragment;
 import com.sundaymorning.coincharge.fragment.OfferwallFragment;
-import com.sundaymorning.coincharge.fragment.SettingFragment;
 import com.sundaymorning.coincharge.fragment.StoreFragment;
 import com.sundaymorning.coincharge.object.NasEntry;
 import com.sundaymorning.coincharge.utils.Utils;
 import com.tnkfactory.ad.TnkSession;
-import com.tnkfactory.ad.TnkStyle;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements OnNavigationItemSelectedListener {
 
+    public int mLastViewPager;
+    NavigationView navigationView;
     private Context mContext = this;
-
     private MemberInfoData memberInfoData;
     private LoginData memberLoginData;
-
     private ArrayList<NasEntry> nas_entries = new ArrayList<>();
     private ArrayList<NASWallAdInfo> mAdsInfo = new ArrayList<>();
-    NavigationView navigationView;
     private int menuItemID = R.id.ads1;
-
     private TextView mCurrent_Nick;
     private TextView mCurrent_Coin;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (context != null && intent != null && intent.getAction() != null) {
+                if (intent.getAction().equals(Common.FINISH_APP)) {
+                    finish();
+                }
+            }
+        }
+    };
 
-    public int mLastViewPager;
+    private static void sendEmail(Context context, String to, String title, String message) {
+        final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+        emailIntent.setType("text/html");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{to});
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, title);
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(message));
+        context.startActivity(Intent.createChooser(emailIntent, "Email:"));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,24 +105,13 @@ public class MainActivity extends AppCompatActivity
 
         LinearLayout HeaderView = (LinearLayout) navigationView.getHeaderView(0);
 
-        mCurrent_Coin = (TextView)HeaderView.findViewById(R.id.current_coin);
-        mCurrent_Nick = (TextView)HeaderView.findViewById(R.id.current_nick);
+        mCurrent_Coin = (TextView) HeaderView.findViewById(R.id.current_coin);
+        mCurrent_Nick = (TextView) HeaderView.findViewById(R.id.current_nick);
         navigationView.setNavigationItemSelectedListener(this);
 
         TnkSession.setUserName(this, memberLoginData.getMID());
         registerReceiver();
     }
-
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (context != null && intent != null && intent.getAction() != null) {
-                if (intent.getAction().equals(Common.FINISH_APP)) {
-                    finish();
-                }
-            }
-        }
-    };
 
     private void registerReceiver() {
         IntentFilter f = new IntentFilter();
@@ -129,9 +130,9 @@ public class MainActivity extends AppCompatActivity
         if (menuItemID == R.id.ads1) {
             if (mLastViewPager == 2) {
                 IgawCommon.startSession(this);
-                IgawCommon.setUserId(this,memberLoginData.getMID());
+                IgawCommon.setUserId(this, memberLoginData.getMID());
 
-            } else if (mLastViewPager == 1){
+            } else if (mLastViewPager == 1) {
                 TnkSession.setUserName(this, memberLoginData.getMID());
             } else {
                 mAdsInfo.clear();
@@ -146,7 +147,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        // TODO Auto-generated method stub
         super.onDestroy();
         IgawDisplayAd.destroy();
         unregisterReceiver();
@@ -203,8 +203,6 @@ public class MainActivity extends AppCompatActivity
 //        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -279,8 +277,8 @@ public class MainActivity extends AppCompatActivity
                             public void onClick(DialogInterface dialog, int id) {
 
                                 sendEmail(mContext, "sundaymorning0315.contact@gmail.com",
-                                        "["+ mContext.getString(R.string.app_name) + "/" + memberInfoData.getNickName() + "] - 문의사항",
-                                        "App이름 : "+ mContext.getString(R.string.app_name) + " <br>닉네임 : " + memberInfoData.getNickName() + "<br>문의내용 : ");
+                                        "[" + mContext.getString(R.string.app_name) + "/" + memberInfoData.getNickName() + "] - 문의사항",
+                                        "App이름 : " + mContext.getString(R.string.app_name) + " <br>닉네임 : " + memberInfoData.getNickName() + "<br>문의내용 : ");
 
                             }
                         })
@@ -298,18 +296,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private static void sendEmail(Context context, String to, String title, String message) {
-        final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-        emailIntent.setType("text/html");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
-        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, title);
-        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(message));
-        context.startActivity(Intent.createChooser(emailIntent, "Email:"));
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        // TODO Auto-generated method stub
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // 유저가 선택한 결과를 SDK에 넘겨줌.
 //        if(offerwallLayout != null)

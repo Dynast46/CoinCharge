@@ -1,86 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="35dp"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
     <EditText
         android:id="@+id/id_edittext"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/id_hint"
         android:inputType="textEmailAddress"
         android:paddingEnd="3dp"
         android:paddingLeft="3dp"
         android:paddingRight="3dp"
-        android:paddingStart="3dp" />
+        android:paddingStart="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/pw_edittext"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:ems="30"
         android:hint="@string/pw_hint"
         android:inputType="textPassword"
         android:paddingEnd="3dp"
         android:paddingLeft="3dp"
         android:paddingRight="3dp"
-        android:paddingStart="3dp" />
+        android:paddingStart="3dp"
+        app:layout_constraintEnd_toEndOf="@+id/id_edittext"
+        app:layout_constraintStart_toStartOf="@+id/id_edittext"
+        app:layout_constraintTop_toBottomOf="@+id/id_edittext" />
 
     <Button
         android:id="@+id/qid_btn"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="36dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginTop="8dp"
         android:background="@null"
-        android:gravity="right"
-        android:text="@string/question_id" />
+        android:gravity="right|center_vertical"
+        android:text="@string/question_id"
+        app:layout_constraintEnd_toEndOf="@+id/pw_edittext"
+        app:layout_constraintTop_toBottomOf="@+id/pw_edittext" />
 
     <Button
         android:id="@+id/qpw_btn"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="36dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginTop="8dp"
         android:background="@null"
-        android:gravity="right"
-        android:text="@string/question_pw" />
+        android:gravity="right|center_vertical"
+        android:text="@string/question_pw"
+        app:layout_constraintEnd_toEndOf="@+id/qid_btn"
+        app:layout_constraintTop_toBottomOf="@+id/qid_btn" />
 
-    <RelativeLayout
+
+    <Button
+        android:id="@+id/login_btn"
+        style="@style/btn_style"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/login"
+        app:layout_constraintBottom_toTopOf="@+id/join_btn"
+        app:layout_constraintEnd_toEndOf="@+id/join_btn"
+        app:layout_constraintStart_toStartOf="@+id/join_btn" />
+
+    <Button
+        android:id="@+id/join_btn"
+        style="@style/btn_style"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/join"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/login_btn"
-                style="@style/btn_style"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="false"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:text="@string/login" />
-
-            <Button
-                android:id="@+id/join_btn"
-                style="@style/btn_style"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:text="@string/join" />
-        </LinearLayout>
-
-    </RelativeLayout>
-
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
