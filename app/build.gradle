@@ -11,12 +11,12 @@ android {
         versionCode 1
         versionName "1.0.00"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
 
         multiDexEnabled true
 
-
-//        buildConfigField "String", "APP_ID", '"5"'
-        buildConfigField "String", "APP_ID", '"4"'
+        buildConfigField "String", "APP_ID", '"5"'
+//        buildConfigField "String", "APP_ID", '"4"'
         buildConfigField "String", "DEVICE_TYPE", '"2"'
     }
 
@@ -68,6 +68,9 @@ dependencies {
             dirs 'libs'
         }
     }
+
+    compile 'com.github.vungle:vungle-android-sdk:5.1.0'
+    compile 'com.fpang:adsync2:5.2.5'
 }
 
 apply plugin: 'com.google.gms.google-services'

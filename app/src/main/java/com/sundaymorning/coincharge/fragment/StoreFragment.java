@@ -8,13 +8,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.sundaymorning.coincharge.R;
+import com.sundaymorning.coincharge.adapter.StoreAdapter;
+import com.sundaymorning.coincharge.object.StoreProductEntry;
 import com.tnkfactory.ad.AdListView;
 import com.tnkfactory.ad.TnkAdListener;
 import com.tnkfactory.ad.TnkLayout;
 import com.tnkfactory.ad.TnkSession;
+
+import java.util.ArrayList;
 
 /**
  * Created by sweet on 2017-08-05.
@@ -24,6 +29,27 @@ import com.tnkfactory.ad.TnkSession;
 public class StoreFragment extends Fragment {
 
     private Context mContext;
+    private TnkAdListener mTnkAdListener = new TnkAdListener() {
+        @Override
+        public void onClose(int i) {
+
+        }
+
+        @Override
+        public void onShow() {
+
+        }
+
+        @Override
+        public void onFailure(int i) {
+
+        }
+
+        @Override
+        public void onLoad() {
+
+        }
+    };
 
     public StoreFragment(Context mContext) {
         this.mContext = mContext;
@@ -36,9 +62,21 @@ public class StoreFragment extends Fragment {
 
         getActivity().setTitle(R.string.store);
 
+        StoreAdapter adapter = new StoreAdapter(mContext, getStoreEntry());
+        ListView listView = (ListView) v.findViewById(R.id.adlistView);
+        listView.setAdapter(adapter);
         return v;
     }
 
+    private ArrayList<StoreProductEntry> getStoreEntry() {
+        ArrayList<StoreProductEntry> arrayList = new ArrayList<>();
+        arrayList.add(new StoreProductEntry(0, "GS편의점 상품권 1000원권", 1200));
+        arrayList.add(new StoreProductEntry(0, "7/11편의점 상품권 1000원권", 1200));
+        arrayList.add(new StoreProductEntry(0, "위드미편의점 상품권 1000원권", 1200));
+        arrayList.add(new StoreProductEntry(0, "편의점 상품권 1000원권", 1200));
+
+        return arrayList;
+    }
 
     private TnkLayout makePopupLayout() {
         TnkLayout res = new TnkLayout();
@@ -71,28 +109,6 @@ public class StoreFragment extends Fragment {
         return res;
 
     }
-
-    private TnkAdListener mTnkAdListener = new TnkAdListener() {
-        @Override
-        public void onClose(int i) {
-
-        }
-
-        @Override
-        public void onShow() {
-
-        }
-
-        @Override
-        public void onFailure(int i) {
-
-        }
-
-        @Override
-        public void onLoad() {
-
-        }
-    };
 
 
 }

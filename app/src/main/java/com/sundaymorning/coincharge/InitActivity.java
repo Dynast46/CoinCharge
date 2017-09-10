@@ -20,6 +20,8 @@ import com.sundaymorning.coincharge.data.MemberInfoData;
 import com.sundaymorning.coincharge.data.MemberInitData;
 import com.sundaymorning.coincharge.data.SharedPreferenceUtils;
 import com.sundaymorning.coincharge.utils.Utils;
+import com.vungle.publisher.VungleInitListener;
+import com.vungle.publisher.VunglePub;
 
 
 /**
@@ -28,8 +30,8 @@ import com.sundaymorning.coincharge.utils.Utils;
 
 public class InitActivity extends Activity {
 
+    final VunglePub vunglePub = VunglePub.getInstance();
     private Context mContext = this;
-
     private String mid;
     private String lkey;
     private String mdid;
@@ -88,7 +90,7 @@ public class InitActivity extends Activity {
 
         @Override
         public void OnError(int errorCode) {
-            String message = "[" + errorCode + "] 로그인에 실패하였습니다.\n잠시 후 다시 시도해주세요.";
+            String message;
             if (errorCode == -300) {
                 message = "차단된 계정입니다.\n문의가 있으시면 sundaymorning0315.contact@gmail.com으로 문의주세요.";
             } else if (errorCode == -9999) {
@@ -173,22 +175,35 @@ public class InitActivity extends Activity {
     private void initData() {
         NAGcm.registerGCM(this, Common.GCM_KEY);
 
+
         mid = NAMember.getMemberID(mContext);
         lkey = NAMember.getLoginKey(mContext);
         mdid = NAMember.getMemberDeviceID(mContext);
 
+
+        vunglePub.init(this, getString(R.string.vungle_key), new String[]{getString(R.string.vungle_placement_id)}, new VungleInitListener() {
+
+            @Override
+            public void onSuccess() {
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+
+            }
+        });
         requestPermission();
     }
 
     private void requestPermission() {
-    // 마시멜로우 이상
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-             if (!hasPermissions(mContext, PERMISSIONS)) {
-                 ActivityCompat.requestPermissions(this, PERMISSIONS, 123);
-             } else
-                 doSomething();
-         } else
-             doSomething();
+        // 마시멜로우 이상
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!hasPermissions(mContext, PERMISSIONS)) {
+                ActivityCompat.requestPermissions(this, PERMISSIONS, 123);
+            } else
+                doSomething();
+        } else
+            doSomething();
     }
 
     public boolean hasPermissions(Context context, String... permissions) {
@@ -238,15 +253,12 @@ public class InitActivity extends Activity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         try {
-
                             String sendLink = marketMoveURL;
 
                             if (sendLink == null || sendLink.isEmpty()) {
                                 sendLink = "";
                             }
-
                             Intent intent = Intent.parseUri(sendLink, 0);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

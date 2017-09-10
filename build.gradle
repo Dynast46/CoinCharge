@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
 //        Android Studio 2.3.3
-        classpath 'com.android.tools.build:gradle:3.0.0-alpha9'
+        classpath 'com.android.tools.build:gradle:3.0.0-beta5'
 //        Android Studio 3.0
 //        classpath 'com.android.tools.build:gradle:3.0.0-alpha5'
 
@@ -25,6 +25,14 @@ allprojects {
 //        Android Studio 3.0
         maven {
             url 'https://maven.google.com'
+        }
+
+        maven {
+            url 'https://jitpack.io'
+        }
+
+        maven {
+            url 'https://dl.bintray.com/tonylee/maven/'
         }
     }
 }

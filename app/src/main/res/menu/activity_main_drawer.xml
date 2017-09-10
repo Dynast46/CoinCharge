@@ -1,30 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <group android:checkableBehavior="single">
-        <item android:id="@+id/ads1" android:icon="@drawable/ic_shopping_basket_black_24dp"
-            android:title="@string/app_name" />
-        <item android:id="@+id/adpopcorn" android:icon="@drawable/ic_shopping_basket_black_24dp"
-            android:title="@string/AdPopcorn" />
-        <!--<item android:id="@+id/ads2" android:icon="@drawable/ic_menu_gallery"-->
-            <!--android:title="Gallery" />-->
-        <!--<item android:id="@+id/ads3" android:icon="@drawable/ic_menu_slideshow"-->
-            <!--android:title="Slideshow" />-->
-        <item android:id="@+id/store" android:icon="@drawable/ic_shopping_cart_black_24dp"
+    <group
+        android:id="@+id/adsMenu"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nas_ads"
+            android:icon="@drawable/ic_shopping_basket_black_24dp"
+            android:title="@string/nas_ads" />
+        <item
+            android:id="@+id/tnk_ads"
+            android:icon="@drawable/ic_shopping_basket_black_24dp"
+            android:title="@string/tnk_ads" />
+        <item
+            android:id="@+id/adpopcorn"
+            android:checkable="false"
+            android:icon="@drawable/ic_shopping_basket_black_24dp"
+            android:title="@string/adPopcorn_ads" />
+        <item
+            android:id="@+id/adsync"
+            android:checkable="false"
+            android:icon="@drawable/ic_shopping_basket_black_24dp"
+            android:title="@string/adsync_ads" />
+        <item
+            android:id="@+id/vungle"
+            android:checkable="false"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/vungle" />
+        <item
+            android:id="@+id/store"
+            android:icon="@drawable/ic_shopping_cart_black_24dp"
             android:title="@string/store" />
-        <item android:id="@+id/mypage" android:icon="@drawable/ic_face_black_24dp"
-              android:title="@string/my_page" />
+        <item
+            android:id="@+id/mypage"
+            android:icon="@drawable/ic_face_black_24dp"
+            android:title="@string/my_page" />
         <!--<item android:id="@+id/settings" android:icon="@drawable/ic_menu_manage"-->
-            <!--android:title="@string/setting" />-->
+        <!--android:title="@string/setting" />-->
 
     </group>
 
-    <item android:title="">
-        <menu>
-            <item android:id="@+id/notice" android:title="@string/notice" />
-            <item android:id="@+id/help" android:title="@string/help" />
-            <item android:id="@+id/question" android:title="@string/question" />
-        </menu>
-    </item>
+    <group
+        android:id="@+id/test1"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/notice"
+            android:title="@string/notice" />
+        <item
+            android:id="@+id/help"
+            android:title="@string/help" />
+        <item
+            android:id="@+id/question"
+            android:title="@string/question" />
+    </group>
 
 </menu>

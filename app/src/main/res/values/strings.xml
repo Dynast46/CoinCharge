@@ -1,6 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">코인충전소</string>
-    <string name="AdPopcorn">AdPopcorn</string>
+    <string name="nas_ads">나스충전소</string>
+    <string name="tnk_ads">TNK충전소</string>
+    <string name="adsense_ads">애드센스</string>
+    <string name="adsync_ads">애드싱크</string>
+    <string name="adPopcorn_ads">AdPopcorn</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -9,6 +13,8 @@
 
     <string name="nas_key">b22f802757c4b9237d63456532fb19a5</string>
     <string name="tnk_key" tools:ignore="TypographyDashes">d060b080–30f1–859b–b958-1f0304090809</string>
+    <string name="vungle_key">598fa38d9c57ddf458004ead</string>
+    <string name="vungle_placement_id">DEFAULT75811</string>
     <string name="version">버전</string>
     <string name="current_version">현재버전</string>
     <string name="new_version">최신버전</string>
@@ -86,6 +92,8 @@
     <string name="nickname_duplicated_error">이미 등록된 닉네임입니다.</string>
     <string name="account_duplicated_error">이미 등록된 이메일입니다.</string>
     <string name="store">스토어</string>
+
+    <string name="vungle">Vungle(동영상광고)</string>
     <string name="setting">설정</string>
     <string name="cash">캐시</string>
     <string name="attendance">출석하기</string>

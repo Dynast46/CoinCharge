@@ -49,6 +49,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/text_vertical_padding"
                         android:layout_marginTop="@dimen/text_vertical_padding"
+                        android:paddingStart="8dp"
                         android:text="@string/now_fund" />
                 </LinearLayout>
 
@@ -84,6 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/text_vertical_padding"
                         android:layout_marginTop="@dimen/text_vertical_padding"
+                        android:paddingStart="8dp"
                         android:text="@string/receive_fund" />
                 </LinearLayout>
 
@@ -121,6 +123,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/text_vertical_padding"
                         android:layout_marginTop="@dimen/text_vertical_padding"
+                        android:paddingStart="8dp"
                         android:text="@string/use_fund" />
                 </LinearLayout>
 
@@ -155,8 +158,8 @@
                 <LinearLayout
                     android:id="@+id/recomm_layout"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -166,6 +169,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/text_vertical_padding"
                         android:layout_marginTop="@dimen/text_vertical_padding"
+                        android:paddingStart="8dp"
                         android:text="@string/receive_recomm" />
                 </LinearLayout>
 
@@ -351,8 +355,8 @@
                 <LinearLayout
                     android:id="@+id/change_pw_layout"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -391,8 +395,8 @@
                 <LinearLayout
                     android:id="@+id/logout_layout"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -475,8 +479,8 @@
                 <LinearLayout
                     android:id="@+id/policy1_layout"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -513,8 +517,8 @@
                 <LinearLayout
                     android:id="@+id/policy2_layout"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView

@@ -20,7 +20,6 @@ import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePager
 import com.sundaymorning.coincharge.data.MemberInitData;
 import com.sundaymorning.coincharge.data.SharedPreferenceUtils;
 import com.sundaymorning.coincharge.object.NasEntry;
-import com.tnkfactory.ad.TnkSession;
 
 import java.util.ArrayList;
 
@@ -36,6 +35,24 @@ public class OfferwallFragment extends Fragment {
     private ArrayList<NASWallAdInfo> mAdsInfo;
 
     private ViewPager mPager;
+    private ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+//            mLastViewPager = position;
+            MainActivity activity = (MainActivity)mContext;
+            activity.mLastViewPager = position;
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
 
     public OfferwallFragment(Context mContext, ArrayList<NasEntry> mNas_Entries, ArrayList<NASWallAdInfo> adInfos) {
         this.mContext = mContext;
@@ -75,8 +92,8 @@ public class OfferwallFragment extends Fragment {
 
     private static class NavigationAdapter extends CacheFragmentStatePagerAdapter {
 
-        private Context context;
         private static final String[] TITLES = new String[]{"NAS", "TNK"};
+        private Context context;
         private ArrayList<NasEntry> nas_Entries;
         private ArrayList<NASWallAdInfo> adsInfo;
 
@@ -125,23 +142,4 @@ public class OfferwallFragment extends Fragment {
             return TITLES[position];
         }
     }
-
-    private ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-//            mLastViewPager = position;
-            MainActivity activity = (MainActivity)mContext;
-            activity.mLastViewPager = position;
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-
-        }
-    };
 }

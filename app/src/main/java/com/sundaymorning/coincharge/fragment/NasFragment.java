@@ -40,6 +40,8 @@ public class NasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_nas, container, false);
 
+        getActivity().setTitle(R.string.nas_ads);
+
         ListView mOfferwall_List = (ListView) v.findViewById(R.id.nas_offer);
         mOfferwall_List.setAdapter(new NasAdapter(mContext, mNas_Entries, mAdsInfo));
 

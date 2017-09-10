@@ -1,6 +1,5 @@
 package com.sundaymorning.coincharge.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,6 +38,105 @@ public class SignUpActivity extends AppCompatActivity {
     private CheckBox mPolicy2Box;
 
     private String mPhoneNumber;
+    private View.OnClickListener mPolicy1ClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(mContext, PolicyActivity.class);
+            intent.putExtra("title", mContext.getString(R.string.policy));
+            intent.putExtra("type", true);
+            startActivity(intent);
+        }
+    };
+    private View.OnClickListener mPolicy2ClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(mContext, PolicyActivity.class);
+            intent.putExtra("title", mContext.getString(R.string.policy2));
+            intent.putExtra("type", false);
+            startActivity(intent);
+        }
+    };
+    private NAMember.OnMemberInsertListener mOnMemberInsertListener = new Common.OnMemberInsertListener() {
+        @Override
+        public void OnSuccess(String s, String s1) {
+            Intent intent = new Intent(mContext, InitActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+        @Override
+        public void OnError(int i) {
+            error(i);
+        }
+
+        @Override
+        public void OnJson(String s) {
+
+        }
+    };
+    private NAMember.OnMemberOverlapCheckListener mOnMemberNicknameOverlapCheckListener = new Common.OnMemberOverlapCheckListener() {
+        @Override
+        public void OnSuccess(boolean b) {
+            Utils.Log("NICKNAME CHECK _ " + b);
+
+            if (!b) {
+                join();
+            } else {
+                Utils.showToast(mContext, getResources().getString(R.string.nickname_duplicated_error));
+            }
+        }
+
+        @Override
+        public void OnError(int i) {
+            error(i);
+        }
+
+        @Override
+        public void OnJson(String s) {
+
+        }
+    };
+    private NAMember.OnMemberOverlapCheckListener mOnMemberAccountOverlapCheckListener = new Common.OnMemberOverlapCheckListener() {
+        @Override
+        public void OnSuccess(boolean b) {
+
+            Utils.Log("ACCOUNT CHECK _ " + b);
+            if (!b) {
+                checkDuplicatedNickname();
+            } else {
+                Utils.showToast(mContext, getResources().getString(R.string.account_duplicated_error));
+            }
+        }
+
+        @Override
+        public void OnError(int i) {
+            error(i);
+        }
+
+        @Override
+        public void OnJson(String s) {
+
+        }
+    };
+    private View.OnClickListener mJoinClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (checkData()) {
+                checkDuplicatedAccount();
+            } else {
+                Utils.showDialog(mContext,
+                        null,
+                        getResources().getString(R.string.input_data_message),
+                        getResources().getString(R.string.ok),
+                        null,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        }, null);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,46 +173,6 @@ public class SignUpActivity extends AppCompatActivity {
         Button JoinBtn = (Button) findViewById(R.id.btn_join);
         JoinBtn.setOnClickListener(mJoinClickListener);
     }
-
-    private View.OnClickListener mPolicy1ClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(mContext, PolicyActivity.class);
-            intent.putExtra("title", mContext.getString(R.string.policy));
-            intent.putExtra("type", true);
-            startActivity(intent);
-        }
-    };
-
-    private View.OnClickListener mPolicy2ClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(mContext, PolicyActivity.class);
-            intent.putExtra("title", mContext.getString(R.string.policy2));
-            intent.putExtra("type", false);
-            startActivity(intent);
-        }
-    };
-
-    private View.OnClickListener mJoinClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (checkData()) {
-                checkDuplicatedAccount();
-            } else {
-                Utils.showDialog(mContext,
-                        null,
-                        getResources().getString(R.string.input_data_message),
-                        getResources().getString(R.string.ok),
-                        null,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        }, null);
-            }
-        }
-    };
 
     private boolean checkData() {
         String account = mEmailEditText.getText().toString();
@@ -192,69 +250,4 @@ public class SignUpActivity extends AppCompatActivity {
         String nickname = mNickNameEditText.getText().toString();
         NAMember.MemberOverlapCheckNickname(mContext, nickname, mOnMemberNicknameOverlapCheckListener);
     }
-
-    private NAMember.OnMemberOverlapCheckListener mOnMemberAccountOverlapCheckListener = new Common.OnMemberOverlapCheckListener() {
-        @Override
-        public void OnSuccess(boolean b) {
-
-            Utils.Log("ACCOUNT CHECK _ " + b);
-            if (!b) {
-                checkDuplicatedNickname();
-            } else {
-                Utils.showToast(mContext, getResources().getString(R.string.account_duplicated_error));
-            }
-        }
-
-        @Override
-        public void OnError(int i) {
-            error(i);
-        }
-
-        @Override
-        public void OnJson(String s) {
-
-        }
-    };
-
-    private NAMember.OnMemberOverlapCheckListener mOnMemberNicknameOverlapCheckListener = new Common.OnMemberOverlapCheckListener() {
-        @Override
-        public void OnSuccess(boolean b) {
-            Utils.Log("NICKNAME CHECK _ " + b);
-
-            if (!b) {
-                join();
-            } else {
-                Utils.showToast(mContext, getResources().getString(R.string.nickname_duplicated_error));
-            }
-        }
-
-        @Override
-        public void OnError(int i) {
-            error(i);
-        }
-
-        @Override
-        public void OnJson(String s) {
-
-        }
-    };
-
-    private NAMember.OnMemberInsertListener mOnMemberInsertListener = new Common.OnMemberInsertListener() {
-        @Override
-        public void OnSuccess(String s, String s1) {
-            Intent intent = new Intent(mContext, InitActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
-        @Override
-        public void OnError(int i) {
-            error(i);
-        }
-
-        @Override
-        public void OnJson(String s) {
-
-        }
-    };
 }

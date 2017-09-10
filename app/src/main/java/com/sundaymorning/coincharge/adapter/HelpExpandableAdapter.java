@@ -101,9 +101,9 @@ public class HelpExpandableAdapter extends BaseExpandableListAdapter {
         }
 
         if (isExpanded)
-            groupHolder.group_image.setImageResource(R.drawable.ic_keyboard_arrow_up_black_36dp);
+            groupHolder.group_image.setImageResource(R.drawable.ic_keyboard_arrow_up_black_24dp);
         else
-            groupHolder.group_image.setImageResource(R.drawable.ic_keyboard_arrow_down_black_36dp);
+            groupHolder.group_image.setImageResource(R.drawable.ic_keyboard_arrow_down_black_24dp);
 
         return v;
     }

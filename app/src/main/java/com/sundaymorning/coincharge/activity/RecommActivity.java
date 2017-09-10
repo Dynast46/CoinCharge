@@ -6,25 +6,21 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.namember.NAMember;
 import com.namember.data.RecommenderData;
 import com.namember.utils.Common;
 import com.sundaymorning.coincharge.R;
-import com.sundaymorning.coincharge.adapter.ReceiveFundAdapter;
-import com.sundaymorning.coincharge.adapter.UseFundAdapter;
 import com.sundaymorning.coincharge.data.MemberInfoData;
 import com.sundaymorning.coincharge.data.SharedPreferenceUtils;
-import com.sundaymorning.coincharge.holder.FundViewHolder;
 import com.sundaymorning.coincharge.holder.RecommViewHolder;
 import com.sundaymorning.coincharge.object.ReceiveFundEntry;
-import com.sundaymorning.coincharge.object.UseFundEntry;
 
 import java.util.ArrayList;
 
@@ -95,12 +91,22 @@ public class RecommActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public class RecommAdapter extends BaseAdapter {
 
         private Context mContext;
         private ArrayList<RecommenderData> mEntries;
 
-        public RecommAdapter(Context context, ArrayList<RecommenderData> entries) {
+        RecommAdapter(Context context, ArrayList<RecommenderData> entries) {
             this.mContext = context;
             this.mEntries = entries;
         }
