@@ -1,5 +1,6 @@
 //noinspection GradleCompatible
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 25
@@ -71,6 +72,10 @@ dependencies {
 
     compile 'com.github.vungle:vungle-android-sdk:5.1.0'
     compile 'com.fpang:adsync2:5.2.5'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}

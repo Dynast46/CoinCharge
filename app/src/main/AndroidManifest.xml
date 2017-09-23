@@ -42,7 +42,7 @@
 
         <meta-data
             android:name="partner_id"
-            android:value="01496-20170903-159" />
+            android:value="01496-20170924-310" />
         <meta-data
             android:name="title_bar_color"
             android:value="@color/colorPrimary" />

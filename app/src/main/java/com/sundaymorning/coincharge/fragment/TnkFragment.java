@@ -35,6 +35,8 @@ public class TnkFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tnk, container, false);
 
+        getActivity().setTitle(R.string.tnk_ads);
+
         setTnkStyle();
         TnkLayout layout = makePopupLayout();
         AdListView adlistView = TnkSession.createAdListView(mContext, layout);

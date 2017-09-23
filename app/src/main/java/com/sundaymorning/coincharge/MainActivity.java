@@ -36,6 +36,7 @@ import com.sundaymorning.coincharge.data.MemberInfoData;
 import com.sundaymorning.coincharge.data.MemberInitData;
 import com.sundaymorning.coincharge.data.SharedPreferenceUtils;
 import com.sundaymorning.coincharge.fragment.AdsyncFragment;
+import com.sundaymorning.coincharge.fragment.IGAWFragment;
 import com.sundaymorning.coincharge.fragment.MyPageFragment;
 import com.sundaymorning.coincharge.fragment.NasFragment;
 import com.sundaymorning.coincharge.fragment.StoreFragment;
@@ -283,6 +284,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             fr = new StoreFragment(mContext);
         } else if (id == R.id.adpopcorn) {
             IgawAdpopcorn.openOfferWall(this);
+//            fr = new IGAWFragment(mContext);
             return true;
         } else if (id == R.id.vungle) {
             if (vunglePub.isAdPlayable(vungle_Placement_id)) {

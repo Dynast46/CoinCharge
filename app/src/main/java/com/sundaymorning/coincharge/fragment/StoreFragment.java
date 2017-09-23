@@ -1,23 +1,30 @@
 package com.sundaymorning.coincharge.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
+import com.namember.utils.JsonUtil;
+import com.namember.utils.NAMemberUtils;
+import com.namember.utils.NetManager;
 import com.sundaymorning.coincharge.R;
 import com.sundaymorning.coincharge.adapter.StoreAdapter;
-import com.sundaymorning.coincharge.object.StoreProductEntry;
-import com.tnkfactory.ad.AdListView;
-import com.tnkfactory.ad.TnkAdListener;
-import com.tnkfactory.ad.TnkLayout;
-import com.tnkfactory.ad.TnkSession;
+import com.sundaymorning.coincharge.data.MemberInfoData;
+import com.sundaymorning.coincharge.data.SharedPreferenceUtils;
+import com.sundaymorning.coincharge.object.StoreCardEntry;
+import com.sundaymorning.coincharge.utils.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -29,86 +36,216 @@ import java.util.ArrayList;
 public class StoreFragment extends Fragment {
 
     private Context mContext;
-    private TnkAdListener mTnkAdListener = new TnkAdListener() {
-        @Override
-        public void onClose(int i) {
-
-        }
-
-        @Override
-        public void onShow() {
-
-        }
-
-        @Override
-        public void onFailure(int i) {
-
-        }
-
-        @Override
-        public void onLoad() {
-
-        }
-    };
+    private View v;
+    private MemberInfoData memberInfoData;
 
     public StoreFragment(Context mContext) {
         this.mContext = mContext;
     }
 
+    public interface onStoreCardListener {
+        void OnSuccess(ArrayList<StoreCardEntry> var4);
+
+        void OnError(int var1);
+
+        void OnJson(String var1);
+    }
+
+    public interface onCardPurchaseListener {
+        void OnSuccess(int MEMBER_MONEY);
+
+        void OnError(int var1);
+
+        void OnJson(String var1);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_store, container, false);
+        v = inflater.inflate(R.layout.fragment_store, container, false);
 
         getActivity().setTitle(R.string.store);
 
-        StoreAdapter adapter = new StoreAdapter(mContext, getStoreEntry());
-        ListView listView = (ListView) v.findViewById(R.id.adlistView);
-        listView.setAdapter(adapter);
+        StoreCardList(mContext, 2, new onStoreCardListener() {
+            @Override
+            public void OnSuccess(ArrayList<StoreCardEntry> var4) {
+                StoreAdapter adapter = new StoreAdapter(mContext, var4);
+                ListView listView = (ListView) v.findViewById(R.id.adlistView);
+                listView.setAdapter(adapter);
+                listView.setOnItemClickListener(mOnItemClickListener);
+            }
+
+            @Override
+            public void OnError(int var1) {
+
+            }
+
+            @Override
+            public void OnJson(String var1) {
+
+            }
+        });
+
         return v;
     }
 
-    private ArrayList<StoreProductEntry> getStoreEntry() {
-        ArrayList<StoreProductEntry> arrayList = new ArrayList<>();
-        arrayList.add(new StoreProductEntry(0, "GS편의점 상품권 1000원권", 1200));
-        arrayList.add(new StoreProductEntry(0, "7/11편의점 상품권 1000원권", 1200));
-        arrayList.add(new StoreProductEntry(0, "위드미편의점 상품권 1000원권", 1200));
-        arrayList.add(new StoreProductEntry(0, "편의점 상품권 1000원권", 1200));
+    private AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            CardPurchaseInsert(mContext, (int)id, new onCardPurchaseListener() {
+                @Override
+                public void OnSuccess(int MEMBER_MONEY) {
+                    memberInfoData = SharedPreferenceUtils.loadMemberInfoData(mContext);
+                    memberInfoData.setMoney(MEMBER_MONEY);
 
-        return arrayList;
+                    Utils.showDialog(mContext,
+                            null,
+                            "구매가 정상적으로 이루어졌습니다.",
+                            getResources().getString(R.string.ok),
+                            null,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }, null);
+                }
+
+                @Override
+                public void OnError(int var1) {
+                    Utils.showDialog(mContext,
+                            null,
+                            "[" + var1 + "] " + getResources().getString(R.string.re_try_message),
+                            getResources().getString(R.string.ok),
+                            null,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }, null);
+                }
+
+                @Override
+                public void OnJson(String var1) {
+
+                }
+            });
+        }
+    };
+
+    public void StoreCardList(final Context context, final int CARD_CATEGORY_ID, final onStoreCardListener onstoreCardListener) {
+        if (NAMemberUtils.checkNetworkAvailable(context)) {
+            (new Thread(new Runnable() {
+                public void run() {
+                    final String json = NetManager.execute(mContext, "json/CardInfoList.json.asp?", "CARD_CATEGORY_ID", String.valueOf(CARD_CATEGORY_ID));
+                    ((Activity)mContext).runOnUiThread(new Runnable() {
+                        public void run() {
+                            onstoreCardListener.OnJson(json);
+                        }
+                    });
+
+                    try {
+                        JSONObject object = new JSONObject(json);
+                        StoreCardparse(mContext, object, onstoreCardListener);
+                    } catch (Exception var7) {
+                        ((Activity)context).runOnUiThread(new Runnable() {
+                            public void run() {
+                                onstoreCardListener.OnError(-999);
+                            }
+                        });
+                    }
+
+                }
+            })).start();
+        }
     }
 
-    private TnkLayout makePopupLayout() {
-        TnkLayout res = new TnkLayout();
+    private void StoreCardparse(Context context, final JSONObject object, final onStoreCardListener onstoreCardListener) throws Exception {
+        if(object != null) {
+            if(JsonUtil.getJsonInt(object, "result", -999) == 0) {
+                final ArrayList<StoreCardEntry> StoreCardDataList = new ArrayList<>();
+                JSONArray array = object.getJSONArray("items");
 
-        res.adwall.numColumnsPortrait = 1;
-        res.adwall.numColumnsLandscape = 3;
+                for(int i = 0; i < array.length(); ++i) {
+                    int card_type_id = JsonUtil.getJsonInt(array.getJSONObject(i), "CARD_TYPE_ID", 0);
+                    int market_money = JsonUtil.getJsonInt(array.getJSONObject(i), "MARKET_MONEY", 0);
+                    String name = JsonUtil.getJsonString(array.getJSONObject(i), "NAME", "");
+                    int use_possible_card_count = JsonUtil.getJsonInt(array.getJSONObject(i), "USE_POSSIBLE_CARD_COUNT", 0);
 
-        res.adwall.layout = R.layout.content_store;
-        res.adwall.idTitle = 0;
-        res.adwall.idList = R.id.adlistView;
-        res.adwall.idClose = 0;
+                    StoreCardDataList.add(new StoreCardEntry(card_type_id, market_money, name, use_possible_card_count));
+                }
 
-        res.adwall.item.layout = R.layout.holder_tnk;
-        res.adwall.item.height = 80;
-        res.adwall.item.idIcon = R.id.icon_image;
-        res.adwall.item.idTitle = R.id.tnk_title;
-        res.adwall.item.idSubtitle = R.id.tnk_subtitle;
-        res.adwall.item.idTag = R.id.tnk_btn;
-
-        res.adwall.item.tag.bgTagFree = R.drawable.btn_layout;
-        res.adwall.item.tag.bgTagPaid = R.drawable.btn_layout;
-        res.adwall.item.tag.bgTagWeb = R.drawable.btn_layout;
-        res.adwall.item.tag.bgTagCheck = R.drawable.btn_layout;
-
-        res.adwall.item.tag.tcTagFree = 0xffffffff;
-        res.adwall.item.tag.tcTagPaid = 0xffffffff;
-        res.adwall.item.tag.tcTagWeb = 0xffffffff;
-        res.adwall.item.tag.tcTagCheck = 0xffffffff;
-
-        return res;
-
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    public void run() {
+                        onstoreCardListener.OnSuccess(StoreCardDataList);
+                    }
+                });
+            } else {
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    public void run() {
+                        onstoreCardListener.OnError(JsonUtil.getJsonInt(object, "result", -999));
+                    }
+                });
+            }
+        } else {
+            ((Activity)context).runOnUiThread(new Runnable() {
+                public void run() {
+                    onstoreCardListener.OnError(-999);
+                }
+            });
+        }
     }
 
+    public void CardPurchaseInsert(final Context context, final int CARD_TYPE_ID, final onCardPurchaseListener oncardPurchaseListener) {
+        if (NAMemberUtils.checkNetworkAvailable(context)) {
+            (new Thread(new Runnable() {
+                public void run() {
+                    final String json = NetManager.execute(mContext, "json/CardPurchaseInsert.json.asp?", "CARD_TYPE_ID", String.valueOf(CARD_TYPE_ID));
+                    ((Activity)mContext).runOnUiThread(new Runnable() {
+                        public void run() {
+                            oncardPurchaseListener.OnJson(json);
+                        }
+                    });
 
+                    try {
+                        JSONObject object = new JSONObject(json);
+                        CardPurchaseparse(mContext, object, oncardPurchaseListener);
+                    } catch (Exception var7) {
+                        ((Activity)context).runOnUiThread(new Runnable() {
+                            public void run() {
+                                oncardPurchaseListener.OnError(-999);
+                            }
+                        });
+                    }
+
+                }
+            })).start();
+        }
+    }
+
+    private void CardPurchaseparse(Context context, final JSONObject object, final onCardPurchaseListener onstoreCardListener) throws Exception {
+        if(object != null) {
+            if(JsonUtil.getJsonInt(object, "result", -999) == 0) {
+                final int MEMBER_MONEY = JsonUtil.getJsonInt(object, "MEMBER_MONEY", 0);
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    public void run() {
+                        onstoreCardListener.OnSuccess(MEMBER_MONEY);
+                    }
+                });
+            } else {
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    public void run() {
+                        onstoreCardListener.OnError(JsonUtil.getJsonInt(object, "result", -999));
+                    }
+                });
+            }
+        } else {
+            ((Activity)context).runOnUiThread(new Runnable() {
+                public void run() {
+                    onstoreCardListener.OnError(-999);
+                }
+            });
+        }
+    }
 }

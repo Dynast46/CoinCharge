@@ -36,7 +36,7 @@
         android:layout_marginTop="5dp"
         android:ems="30"
         android:hint="@string/input_confirm_code"
-        android:inputType="textPassword"
+        android:inputType="phone"
         android:paddingEnd="3dp"
         android:paddingLeft="3dp"
         android:paddingRight="3dp"

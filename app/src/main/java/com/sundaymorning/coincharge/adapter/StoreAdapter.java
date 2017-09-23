@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.sundaymorning.coincharge.R;
-import com.sundaymorning.coincharge.object.StoreProductEntry;
+import com.sundaymorning.coincharge.object.StoreCardEntry;
 
 import java.util.ArrayList;
 
@@ -19,9 +19,9 @@ import java.util.ArrayList;
 public class StoreAdapter extends BaseAdapter {
 
     private Context mContext;
-    private ArrayList<StoreProductEntry> mArrayList;
+    private ArrayList<StoreCardEntry> mArrayList;
 
-    public StoreAdapter(Context context, ArrayList<StoreProductEntry> arrayList) {
+    public StoreAdapter(Context context, ArrayList<StoreCardEntry> arrayList) {
         this.mContext = context;
         this.mArrayList = arrayList;
     }
@@ -38,7 +38,7 @@ public class StoreAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return mArrayList.get(position).getProductID();
+        return mArrayList.get(position)._CARD_TYPE_ID;
     }
 
     @Override
@@ -56,9 +56,9 @@ public class StoreAdapter extends BaseAdapter {
         }
 
         if (getItem(position) != null) {
-            StoreProductEntry entry = (StoreProductEntry) getItem(position);
-            mViewHolder.setProductTitle(entry.getTitle());
-            mViewHolder.setCash(String.valueOf(entry.getCash()) + "코인");
+            StoreCardEntry entry = (StoreCardEntry) getItem(position);
+            mViewHolder.setProductTitle(entry._NAME);
+            mViewHolder.setCash(String.valueOf(entry._MARKET_MONEY) + "코인");
         }
 
         return v;

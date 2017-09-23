@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,23 +9,13 @@
     tools:context="com.sundaymorning.coincharge.activity.ReceiveFundActivity"
     tools:showIn="@layout/view_receive_fund">
 
-    <android.support.v7.widget.CardView
+    <ListView
+        android:id="@+id/fund_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        card_view:cardBackgroundColor="@android:color/white"
-        card_view:cardCornerRadius="1dp"
-        card_view:cardElevation="2dp"
-        card_view:cardUseCompatPadding="true">
-
-        <ListView
-            android:id="@+id/fund_listview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="?attr/dividerVertical"
-            android:dividerHeight="0.5dp"
-            android:headerDividersEnabled="true"
-            tools:ignore="NestedScrolling"/>
-    </android.support.v7.widget.CardView>
+        android:divider="?attr/dividerVertical"
+        android:dividerHeight="0.5dp"
+        android:headerDividersEnabled="true"
+        tools:ignore="NestedScrolling"/>
 
 </android.support.constraint.ConstraintLayout>

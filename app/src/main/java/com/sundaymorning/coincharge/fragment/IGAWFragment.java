@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.igaworks.adpopcorn.activity.layout.ApOfferWallLayout;
 import com.igaworks.displayad.IgawDisplayAd;
 import com.igaworks.displayad.nativead.IgawNativeAd;
 import com.igaworks.displayad.nativead.IgawNativeAdErrorCode;
@@ -24,6 +26,8 @@ import com.sundaymorning.coincharge.R;
 public class IGAWFragment extends Fragment {
 
     private Context mContext;
+    private LinearLayout activityLayout;
+    private ApOfferWallLayout offerwallLayout;
 
     public IGAWFragment(Context mContext) {
         this.mContext = mContext;
@@ -32,7 +36,7 @@ public class IGAWFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_store, container, false);
+        View v = inflater.inflate(R.layout.fragment_igaw, container, false);
 
 //        setTnkStyle();
 //        TnkLayout layout = makePopupLayout();
@@ -44,23 +48,29 @@ public class IGAWFragment extends Fragment {
 //        adlistView.loadAdList();
 
 //        IgawAdpopcorn.openOfferWall(getActivity());
-        IgawDisplayAd.init(getActivity());
-        IgawDisplayAd.setRefreshTime(40);
 
-        IgawNativeAd nativeAd = new IgawNativeAd(mContext, "b299344870",
-                new IgawNativeAdListener() {
-                    @Override
-                    public void OnNativeAdRequestSucceeded(IgawNativeAd nativeAdInfo) {
+//        IgawDisplayAd.init(getActivity());
+//        IgawDisplayAd.setRefreshTime(40);
+//
+//        IgawNativeAd nativeAd = new IgawNativeAd(mContext, "b299344870",
+//                new IgawNativeAdListener() {
+//                    @Override
+//                    public void OnNativeAdRequestSucceeded(IgawNativeAd nativeAdInfo) {
+//
+//                    }
+//
+//                    @Override
+//                    public void OnNativeAdRequestFailed(IgawNativeAdErrorCode daErrorCode) {
+//                        Log.d("DEBUG", "NativeAd Loaing Fail, ResultCode : " + daErrorCode.getErrorCode() + ", ResultMsg : " + daErrorCode.getErrorMessage());
+//                    }
+//                });
+//
+//        nativeAd.loadAd();
 
-                    }
+        activityLayout = (LinearLayout)v.findViewById(R.id.layout_igaw);
+        offerwallLayout = new ApOfferWallLayout(mContext);
+        activityLayout.addView(offerwallLayout);
 
-                    @Override
-                    public void OnNativeAdRequestFailed(IgawNativeAdErrorCode daErrorCode) {
-                        Log.d("DEBUG", "NativeAd Loaing Fail, ResultCode : " + daErrorCode.getErrorCode() + ", ResultMsg : " + daErrorCode.getErrorMessage());
-                    }
-                });
-
-        nativeAd.loadAd();
         return v;
     }
 }
