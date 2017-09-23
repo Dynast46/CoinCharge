@@ -28,47 +28,16 @@ import com.sundaymorning.coincharge.utils.Utils;
 
 public class MemberActivity extends AppCompatActivity {
 
+    private static final String TAG = "MemberActivity";
     Context mContext = this;
     private EditText mIDEditText;
-    private EditText mPWEditText;
 
 //    private Button mQIDBtn;
 //    private Button mQPWBtn;
 //
 //    private Button mSignInBtn; // 로그인
 //    private Button mSignUpBtn; // 회원가입
-
-    private static final String TAG = "MemberActivity";
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-        initLayout();
-    }
-
-    private void initLayout() {
-        mIDEditText = (EditText) findViewById(R.id.id_edittext);
-        mPWEditText = (EditText) findViewById(R.id.pw_edittext);
-
-        Button mQIDBtn = (Button) findViewById(R.id.qid_btn);
-        Button mQPWBtn = (Button) findViewById(R.id.qpw_btn);
-
-        Button mSignInBtn = (Button) findViewById(R.id.login_btn);
-        Button mSignUpBtn = (Button) findViewById(R.id.join_btn);
-
-        mQIDBtn.setOnClickListener(QIDBtnClickListener);
-        mQPWBtn.setOnClickListener(QPWBtnClickListener);
-        mSignInBtn.setOnClickListener(SignInClickListener);
-        mSignUpBtn.setOnClickListener(SignUpClickListener);
-    }
-
-    private void moveMain() {
-        startActivity(new Intent(mContext, MainActivity.class));
-        finish();
-    }
-
+    private EditText mPWEditText;
     private View.OnClickListener QIDBtnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -76,7 +45,6 @@ public class MemberActivity extends AppCompatActivity {
             finish();
         }
     };
-
     private View.OnClickListener QPWBtnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -84,7 +52,68 @@ public class MemberActivity extends AppCompatActivity {
             finish();
         }
     };
+    private View.OnClickListener SignUpClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(mContext, SignUp0Activity.class));
+//            startActivity(new Intent(mContext, SignUpActivity.class));
+            finish();
+        }
+    };
+    private com.namember.utils.Common.OnMemberViewListener mOnMemberViewListener = new com.namember.utils.Common.OnMemberViewListener() {
+        @Override
+        public void OnSuccess(MemberData memberData) {
 
+            if (memberData != null) {
+
+                MemberInfoData memberInfoData = new MemberInfoData();
+                memberInfoData.setNickName(memberData.getMemberNickname());
+                memberInfoData.setMoney(memberData.getMoney());
+                memberInfoData.setMyRecommendNickname(memberData.getRecommenderMemberNickName());
+                memberInfoData.setEmail(memberData.getMemberEmail());
+                memberInfoData.setAge(memberData.getAge());
+                memberInfoData.setSex(memberData.getSex());
+
+                SharedPreferenceUtils.saveMemberInfoData(mContext, memberInfoData);
+
+                moveMain();
+            }
+        }
+
+        @Override
+        public void onError(int i) {
+            error(i);
+        }
+
+        @Override
+        public void onJson(String s) {
+
+        }
+    };
+    private com.namember.utils.Common.OnMemberLoginListener mOnMemberLoginListener = new com.namember.utils.Common.OnMemberLoginListener() {
+        @Override
+        public void OnSuccess(MemberLoginData memberLoginData) {
+            LoginData mLoginData = new LoginData();
+
+            mLoginData.setMID(memberLoginData.getMemberID());
+            mLoginData.setLKEY(memberLoginData.getLoginKey());
+            mLoginData.setMDID(memberLoginData.getMemberDeviceID());
+
+            SharedPreferenceUtils.saveLogin(mContext, mLoginData);
+
+            NAMember.MemberView(mContext, mOnMemberViewListener);
+        }
+
+        @Override
+        public void OnError(int i) {
+            error(i);
+        }
+
+        @Override
+        public void OnJson(String s) {
+
+        }
+    };
     private View.OnClickListener SignInClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -117,71 +146,34 @@ public class MemberActivity extends AppCompatActivity {
         }
     };
 
-    private View.OnClickListener SignUpClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-//            startActivity(new Intent(mContext, SignUp0Activity.class));
-            startActivity(new Intent(mContext, SignUpActivity.class));
-            finish();
-        }
-    };
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
 
+        initLayout();
+    }
 
-    private com.namember.utils.Common.OnMemberLoginListener mOnMemberLoginListener = new com.namember.utils.Common.OnMemberLoginListener() {
-        @Override
-        public void OnSuccess(MemberLoginData memberLoginData) {
-            LoginData mLoginData = new LoginData();
+    private void initLayout() {
+        mIDEditText = (EditText) findViewById(R.id.id_edittext);
+        mPWEditText = (EditText) findViewById(R.id.pw_edittext);
 
-            mLoginData.setMID(memberLoginData.getMemberID());
-            mLoginData.setLKEY(memberLoginData.getLoginKey());
-            mLoginData.setMDID(memberLoginData.getMemberDeviceID());
+        Button mQIDBtn = (Button) findViewById(R.id.qid_btn);
+        Button mQPWBtn = (Button) findViewById(R.id.qpw_btn);
 
-            SharedPreferenceUtils.saveLogin(mContext, mLoginData);
+        Button mSignInBtn = (Button) findViewById(R.id.login_btn);
+        Button mSignUpBtn = (Button) findViewById(R.id.join_btn);
 
-            NAMember.MemberView(mContext, mOnMemberViewListener);
-        }
+        mQIDBtn.setOnClickListener(QIDBtnClickListener);
+        mQPWBtn.setOnClickListener(QPWBtnClickListener);
+        mSignInBtn.setOnClickListener(SignInClickListener);
+        mSignUpBtn.setOnClickListener(SignUpClickListener);
+    }
 
-        @Override
-        public void OnError(int i) {
-            error(i);
-        }
-
-        @Override
-        public void OnJson(String s) {
-
-        }
-    };
-
-    private com.namember.utils.Common.OnMemberViewListener mOnMemberViewListener = new com.namember.utils.Common.OnMemberViewListener() {
-        @Override
-        public void OnSuccess(MemberData memberData) {
-
-            if (memberData != null) {
-
-                MemberInfoData memberInfoData = new MemberInfoData();
-                memberInfoData.setNickName(memberData.getMemberNickname());
-                memberInfoData.setMoney(memberData.getMoney());
-                memberInfoData.setMyRecommendNickname(memberData.getRecommenderMemberNickName());
-                memberInfoData.setEmail(memberData.getMemberEmail());
-                memberInfoData.setAge(memberData.getAge());
-                memberInfoData.setSex(memberData.getSex());
-
-                SharedPreferenceUtils.saveMemberInfoData(mContext, memberInfoData);
-
-                moveMain();
-            }
-        }
-
-        @Override
-        public void onError(int i) {
-            error(i);
-        }
-
-        @Override
-        public void onJson(String s) {
-
-        }
-    };
+    private void moveMain() {
+        startActivity(new Intent(mContext, MainActivity.class));
+        finish();
+    }
 
     private void error(int errorCode) {
         if (errorCode == -9999) {

@@ -27,7 +27,7 @@ public class AdsyncFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_nas, container, false);
+        View v = inflater.inflate(R.layout.fragment_adsync, container, false);
 
         getActivity().setTitle(R.string.adsync_ads);
 
