@@ -17,6 +17,7 @@ import com.sundaymorning.coincharge.R;
 import com.sundaymorning.coincharge.data.SharedPreferenceUtils;
 import com.sundaymorning.coincharge.utils.Utils;
 
+
 /**
  * Created by sweet on 2017-07-09.
  */
@@ -26,83 +27,6 @@ public class SignUp0Activity extends AppCompatActivity {
     private Context mContext = this;
     private EditText mPhoneEdittext;
     private EditText mCodeEditText;
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_join_0);
-
-        initLayout();
-    }
-
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(mContext, MemberActivity.class));
-        super.onBackPressed();
-    }
-
-    private void initLayout() {
-        mPhoneEdittext = (EditText) findViewById(R.id.edittext_phone);
-        mCodeEditText = (EditText) findViewById(R.id.edittext_code);
-
-        Button mRequestCodeBtn = (Button) findViewById(R.id.btn_request_code);
-        Button mCodeConfirmBtn = (Button) findViewById(R.id.btn_request_code_confirm);
-
-        mRequestCodeBtn.setOnClickListener(mRequestCodeCLickListener);
-        mCodeConfirmBtn.setOnClickListener(mCodeConfirmClickListener);
-    }
-
-    private View.OnClickListener mRequestCodeCLickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String phoneNumber = mPhoneEdittext.getText().toString();
-
-            if (phoneNumber.startsWith("+82"))
-                phoneNumber = phoneNumber.replace("+82", "0");
-
-            if (!phoneNumber.isEmpty() && Utils.checkPatternPhoneNumber(phoneNumber)) {
-                NAMember.MobileCertificationInsert(mContext, phoneNumber, mOnMobileCertificationListener);
-            } else {
-                Utils.showDialog(mContext,
-                        null,
-                        getResources().getString(R.string.input_data_message),
-                        getResources().getString(R.string.ok),
-                        null,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        }, null);
-            }
-        }
-    };
-
-    private View.OnClickListener mCodeConfirmClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String phoneNumber = mPhoneEdittext.getText().toString();
-            String checkString = mCodeEditText.getText().toString();
-
-            if (phoneNumber.startsWith("+82"))
-                phoneNumber = phoneNumber.replace("+82", "0");
-
-            if (!phoneNumber.isEmpty() && !checkString.isEmpty() && Utils.checkPatternPhoneNumber(phoneNumber)) {
-                NAMember.BeforeMobileCertificationCompare(mContext, checkString, phoneNumber, mOnMobileCompareListener);
-            } else {
-                Utils.showDialog(mContext,
-                        null,
-                        getResources().getString(R.string.input_data_message),
-                        getResources().getString(R.string.ok),
-                        null,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        }, null);
-            }
-        }
-    };
-
     private Common.OnMobileCertificationListener mOnMobileCertificationListener = new Common.OnMobileCertificationListener() {
         @Override
         public void OnSuccess() {
@@ -139,7 +63,30 @@ public class SignUp0Activity extends AppCompatActivity {
 
         }
     };
+    private View.OnClickListener mRequestCodeCLickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String phoneNumber = mPhoneEdittext.getText().toString();
 
+            if (phoneNumber.startsWith("+82"))
+                phoneNumber = phoneNumber.replace("+82", "0");
+
+            if (!phoneNumber.isEmpty() && Utils.checkPatternPhoneNumber(phoneNumber)) {
+                NAMember.MobileCertificationInsert(mContext, phoneNumber, mOnMobileCertificationListener);
+            } else {
+                Utils.showDialog(mContext,
+                        null,
+                        getResources().getString(R.string.input_data_message),
+                        getResources().getString(R.string.ok),
+                        null,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        }, null);
+            }
+        }
+    };
     private Common.OnMobileCompareListener mOnMobileCompareListener = new Common.OnMobileCompareListener() {
         @Override
         public void OnSuccess(String s, int i) {
@@ -164,4 +111,54 @@ public class SignUp0Activity extends AppCompatActivity {
 
         }
     };
+    private View.OnClickListener mCodeConfirmClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String phoneNumber = mPhoneEdittext.getText().toString();
+            String checkString = mCodeEditText.getText().toString();
+
+            if (phoneNumber.startsWith("+82"))
+                phoneNumber = phoneNumber.replace("+82", "0");
+
+            if (!phoneNumber.isEmpty() && !checkString.isEmpty() && Utils.checkPatternPhoneNumber(phoneNumber)) {
+                NAMember.BeforeMobileCertificationCompare(mContext, checkString, phoneNumber, mOnMobileCompareListener);
+            } else {
+                Utils.showDialog(mContext,
+                        null,
+                        getResources().getString(R.string.input_data_message),
+                        getResources().getString(R.string.ok),
+                        null,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        }, null);
+            }
+        }
+    };
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_join_0);
+
+        initLayout();
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(mContext, MemberActivity.class));
+        super.onBackPressed();
+    }
+
+    private void initLayout() {
+        mPhoneEdittext = (EditText) findViewById(R.id.edittext_phone);
+        mCodeEditText = (EditText) findViewById(R.id.edittext_code);
+
+        Button mRequestCodeBtn = (Button) findViewById(R.id.btn_request_code);
+        Button mCodeConfirmBtn = (Button) findViewById(R.id.btn_request_code_confirm);
+
+        mRequestCodeBtn.setOnClickListener(mRequestCodeCLickListener);
+        mCodeConfirmBtn.setOnClickListener(mCodeConfirmClickListener);
+    }
 }
